@@ -1,0 +1,29 @@
+  
+    <div class="row vh-100 d-flex align-items-center" style="background-image: url('../../../assets/Login_page.jpg'); background-size: cover;">
+        <div class="bg-danger mt-2 p-2 text-center text-white" *ngIf='errorMessage != null'>
+                {{errorMessage}}                
+            </div>
+        <div class="offset-md-4 col-md-4 bg-white rounded border border-dark">
+            <h1>Please Log in</h1>
+            <form autocomplete="off" #form="ngForm" (ngSubmit)='authenticate(form)'>
+    
+                <fieldset class="form-group m-2">
+                    <label for="username">Username: </label>
+                    <input type="text" class="form-control" name="username" placeholder="Enter username" id="user" required autofocus [(ngModel)]="user.username">
+                </fieldset>
+    
+                <fieldset class="form-group m-2">
+                    <label for="password">Password: </label>
+                    <input type="password" class="form-control" name="password" placeholder="Enter password" id="password" required [(ngModel)]="user.password">
+                </fieldset>
+    
+                <fieldset class="form-group text-right m-2">
+                    <button type="submit" class="btn btn-success m-1">Log in</button>
+                    <button routerLink="/home" class="btn btn-warning m-1">Cancel
+                    </button>
+                </fieldset>               
+    
+            </form>
+        </div>
+    </div>
+    

@@ -1,0 +1,42 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col mt-2">
+            <h2 class="text-center">Your Cart</h2>
+            <table class="table table-bordered table-striped p-2">
+                <thead>
+                    <tr>
+                        <th>Quantity</th>Movie
+                        <th class="text-right">Price</th>
+                        <th class=" text-right">SubTotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="cart.lines.length == 0">
+                        <td class="text-center" colspan="4">Your cart is empty</td>
+                    </tr>
+                    <tr *ngFor='let line of cart.lines' >
+                        <td><input type="number" class="form-control-sm" style="width: 5em" [value]='line.quantity' (change)= 'cart.handleUpdateQuantity($event,line.movie)'></td>
+                        <td>{{line.movie.title}}</td>
+                        <td>{{line.movie.price | currency: 'USD' : 'symbol' : '1.2-2'}}</td>
+                        <td>{{line.lineTotal | currency: 'USD' : 'symbol' : '1.2-2'}}</td>
+                        <td class="text-center"><button class="btn btn-sm btn-danger" (click) = 'cart.removeLine(line.movie._id)'>Remove</button></td> 
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-right">Total</td>
+                        <td class="text-right">{{cart.cartPrice | currency: 'USD' : 'symbol' : '1.2-2' }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="text-center"><button class="btn btn-primary m-1" routerLink="/movieStore">Continue Shopping</button>
+            <button class="btn btn-secondary m-1" routerLink="/checkout" [disabled]="cart.lines.length ==0">Checkout</button></div>
+        </div>
+    </div>
+</div>

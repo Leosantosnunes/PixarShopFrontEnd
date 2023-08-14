@@ -1,0 +1,26 @@
+<app-header></app-header>
+<app-base-page></app-base-page>
+    <div class="container">
+    <div *ngIf="contactSent" class="m-2 text-center">
+        <h2>Thanks</h2>
+        <p>Thanks for sending your message.</p>
+        <p>We will reply as soon as possible</p>
+        <button class="btn btn-primary" routerLink="/">Return home</button>
+    </div>
+
+    <form *ngIf="!contactSent" #form='ngForm' novalidate (ngSubmit)="contactRequestSubmit(form)" class="m-2">
+         <div  class="form-group"><label for="">Name</label><input type="text" class="form-control" #name="ngModel" name="name" [(ngModel)]="contact.name" required>
+        <span *ngIf="submitted && name.invalid" class="text-danger">Please enter your name</span></div>
+
+        <div class="form-group"><label for="">Email</label><input  class="form-control" #email="ngModel" name="email" type="email" [(ngModel)] = 'contact.email' required><span *ngIf="submitted && email.invalid" class="text-danger">Please enter your email</span></div>
+
+        <div class="form-group"><label for="">Message</label><textarea class="form-control" name="message" id="message" cols="30" rows="10" #message="ngModel" [(ngModel)] = 'contact.message' required><span *ngIf="submitted && message.invalid" class="text-danger">Please enter your message</span></textarea></div>    
+    
+
+        <div class="text-center">
+            <button class="btn btn-secondary m-1" routerLink="/cart">Back</button>
+            <button class="btn btn-primary m-1" type="submit">Send Message</button>
+        </div> 
+
+    </form>    
+</div>

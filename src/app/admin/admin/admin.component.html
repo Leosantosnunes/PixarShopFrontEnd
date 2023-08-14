@@ -1,0 +1,30 @@
+<div class="container-fluid"> 
+  <button class="btn btn-outline-info btn-block m-3"
+            routerLink='/movieStore'
+            routerLinkActive='active'>
+            Movie Store
+          </button>  
+      <div class=" d-flex flex-column  align-items-center">
+        <div>
+          <h1>Welcome Admin</h1>
+        </div>
+        <div>
+          <button class="btn btn-outline-info btn-block m-3"
+            routerLink='/admin/movies'
+            routerLinkActive='active'>
+            Movies
+          </button>
+          <button class="btn btn-outline-info btn-block m-3"
+            routerLink='/admin/orders'
+            routerLinkActive='active'>
+            Orders
+          </button>
+        </div>
+      </div>  
+      <div class=''>
+        <router-outlet></router-outlet>
+      </div>
+</div>
+  
+  
+

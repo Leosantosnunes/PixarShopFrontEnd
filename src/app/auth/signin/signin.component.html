@@ -1,0 +1,45 @@
+    <div class="row vh-100 d-flex align-items-center" style="background-image: url('../../../assets/Register_Page.jpg'); background-size: cover;">
+        <div class="offset-md-4 col-md-4 bg-white border border-dark rounded">
+            <h1>Please Register</h1>
+            <form #form="ngForm" (ngSubmit)="registerUserForm(form)" autocomplete="off">
+
+                <fieldset class="form-group m-2">
+                    <label for="username">Username: </label>
+                    <input type="text" class="form-control"
+                    name="username" placeholder="Enter username"
+                    id="user" required autofocus [(ngModel)]="user.username">
+                </fieldset>
+
+                <fieldset class="form-group m-2">
+                    <label for="password">Password: </label>
+                    <input type="password" class="form-control"
+                    name="password" placeholder="Enter password"
+                    id="password" required [(ngModel)]="user.password">
+                </fieldset>
+
+                <fieldset class="form-group m-2">
+                    <label for="email">Email: </label>
+                    <input type="email" class="form-control"
+                    name="email" placeholder="Enter Email Address"
+                    id="email" required [(ngModel)]="user.email">
+                </fieldset>
+                
+                <fieldset class="form-group m-2">
+                    <label for="displayName">DisplayName: </label>
+                    <input type="displayName" class="form-control"
+                    name="displayName" placeholder="Enter your display name"
+                    id="displayName" required [(ngModel)]="user.displayName">
+                </fieldset>
+
+                <fieldset class="form-group text-right m-2">
+                    <input type="submit" class="btn btn-success m-1" value="Register">
+                    <a href="/login">
+                        <input type="button" class="btn btn-warning m-1" value="Cancel">
+                    </a>
+                </fieldset>
+
+            </form>
+        </div>
+    </div>
+
+

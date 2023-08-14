@@ -1,0 +1,33 @@
+ <div class="container">
+   <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Postal Code</th>
+          <th colspan="2">Cart</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf='getOrders().length == 0'>
+          <td colspan="5">There are no orders</td>
+        </tr>
+        <ng-template ngFor let-o [ngForOf]='getOrders()'>
+          <tr>
+            <td>{{ o.name }}</td>
+            <td>{{ o.postalCode }}</td>
+            <th>Product</th>            
+            <td>
+              <button class="btn btn-danger" *ngIf="o._id !== undefined"(click)='delete(o._id)'>Delete</button>
+            </td>
+          </tr>
+          <tr *ngFor='let line of o.cart.lines'>
+            <td colspan="2"></td>
+            <td>{{ line.movie.title }}</td>            
+          </tr>
+        </ng-template>
+      </tbody>
+    </table>
+ </div>
+  
