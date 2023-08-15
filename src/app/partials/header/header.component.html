@@ -7,12 +7,12 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav d-flex align-items-center">
           <li class="navbar-text mx-5" *ngIf="isLoggedIn()"><i class="nav-link text-white">Welcome <span class="fs-3">{{user.displayName}}</span></i></li>          
-          <li class="navbar-text mx-5 fs-4"><a class="nav-link" href="/MovieStore">Store</a></li>
-          <li class="navbar-text mx-5 fs-4"><a class="nav-link" href="/library">Library</a></li>
-          <li class="navbar-text mx-5 fs-4"><a class="nav-link" href="/about">About</a></li>
-          <li class="navbar-text mx-5 fs-4"><a class="nav-link" href="/contact">Contact</a></li>
-          <li class="navbar-text mx-5 fs-4" *ngIf="isLoggedIn() && user.username === 'adminTest'"><a class="nav-link" href="/admin">Admin</a></li>
-          <li class="navbar-text" *ngIf="isLoggedIn()"><a class="nav-link" href="/admin/main" (click)="onLogoutClick()" routerLink="logout"><button class="btn btn-light">Logout</button></a></li>           
+          <li class="navbar-text mx-5 fs-4"><a class="nav-link" routerLink="/MovieStore" href="/MovieStore">Store</a></li>
+          <li class="navbar-text mx-5 fs-4"><a class="nav-link" routerLink="/library" href="/library">Library</a></li>
+          <li class="navbar-text mx-5 fs-4"><a class="nav-link" routerLink="/about" href="/about">About</a></li>
+          <li class="navbar-text mx-5 fs-4"><a class="nav-link" routerLink="/contact" href="/contact">Contact</a></li>
+          <li class="navbar-text mx-5 fs-4" *ngIf="isLoggedIn() && user.username === 'adminTest'"><a class="nav-link" routerLink="/admin" href="/admin">Admin</a></li>
+          <li class="navbar-text" *ngIf="isLoggedIn()"><a class="nav-link" href="/home" (click)="onLogoutClick()" routerLink="logout"><button class="btn btn-light">Logout</button></a></li>           
           <li class="navbar-text mx-5"></li> 
           <li class="navbar-text mx-2"></li>        
           <li class="navbar-text ms-5">
