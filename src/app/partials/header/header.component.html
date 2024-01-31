@@ -5,17 +5,15 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav d-flex align-items-center">
-          <li class="navbar-text mx-5" *ngIf="isLoggedIn()"><i class="nav-link text-white">Welcome <span class="fs-3">{{user.displayName}}</span></i></li>                    
-          <li class="navbar-text mx-5 fs-4" routerLink="/MovieStore"><span class="nav-link">Store</span></li>
-          <li class="navbar-text mx-5 fs-4" routerLink="/library"><span class="nav-link">Library</span></li>
-          <li class="navbar-text mx-5 fs-4" routerLink="/about">About</li>
-          <li class="navbar-text mx-5 fs-4" routerLink="/contact">Contact</li>
-          <li class="navbar-text mx-5 fs-4" *ngIf="isLoggedIn() && user.username === 'adminTest'"><a class="nav-link" routerLink="/admin" href="/admin">Admin</a></li>
-          <li class="navbar-text" *ngIf="isLoggedIn()"><a class="nav-link" href="/home" (click)="onLogoutClick()" routerLink="logout"><button class="btn btn-light">Logout</button></a></li>           
-          <li class="navbar-text mx-5"></li> 
-          <li class="navbar-text mx-2"></li>        
-          <li class="navbar-text ms-5">
+        <div class="navbar-nav d-flex align-items-center justify-content-between">
+          <li class="navbar-text" *ngIf="isLoggedIn()"><i class="nav-link text-white">Welcome <span class="fs-3">{{user.displayName}}</span></i></li>                    
+          <li class="navbar-text fs-4" routerLink="/MovieStore"><span class="nav-link">Store</span></li>
+          <li class="navbar-text fs-4" routerLink="/library"><span class="nav-link">Library</span></li>
+          <li class="navbar-text fs-4" routerLink="/about"><span class="nav-link">About</span></li>
+          <li class="navbar-text fs-4" routerLink="/contact"><span class="nav-link">Contact</span></li>
+          <li class="navbar-text fs-4" *ngIf="isLoggedIn() && user.username === 'adminTest'"><a class="nav-link" routerLink="/admin" href="/admin"><span class="nav-link">Admin </span></a></li>
+          <li class="navbar-text" *ngIf="isLoggedIn()"><a class="nav-link" href="/home" (click)="onLogoutClick()" routerLink="logout"><button class="btn btn-light">Logout</button></a></li>                  
+          <li class="navbar-text nav-link">
             <app-cart-summary></app-cart-summary>
           </li>
         </div>

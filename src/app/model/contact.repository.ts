@@ -14,7 +14,7 @@ export class ContactRepository
     loadContactRequests(): void
     {
         this.loaded = true;
-        this.dataSource.getContacts().subscribe(contactList => this.contactList = contactList);
+        this.dataSource.get("contact").subscribe(contactList => this.contactList = contactList);
     }
 
 
@@ -28,6 +28,6 @@ export class ContactRepository
 
     saveContact(contact:Contact): Observable<Contact>
     {
-        return this.dataSource.saveContact(contact);
+        return this.dataSource.post("contact/request",contact);
     }
 }

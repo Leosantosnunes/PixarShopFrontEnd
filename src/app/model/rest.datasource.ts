@@ -21,7 +21,7 @@ export class RestDataSource
     baseUrl: string = '';
     authToken : string = '';
 
-    private httpOptions = 
+    private httpOptions =
     {
         headers: new HttpHeaders({
             'Content-Type': 'application/json',
@@ -31,80 +31,41 @@ export class RestDataSource
     };
 
     constructor(private http: HttpClient, private jwtService: JwtHelperService)
-    {           
-        //this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/`;
-        this.baseUrl = `https://pixarshop.onrender.com/`;
+    {
+        this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/`;
+        //this.baseUrl = `https://pixarshop.onrender.com/`;
     }
 
-    getMovies(): Observable<Movie[]>
-    {
-
-        return this.http.get<Movie[]>(this.baseUrl + 'movieStore');
-    }
-
-    addMovie(movie: Movie): Observable<Movie>
-  {
-    this.loadToken();
-    return this.http.post<Movie>(this.baseUrl + 'movieStore/add', movie, this.httpOptions);
-  }
-
-    updateMovie(movie: Movie): Observable<Movie>
-  {
-    this.loadToken();
-    return this.http.post<Movie>(`${this.baseUrl}movieStore/edit/${movie._id}`, movie, this.httpOptions);
-  }
-
-    deleteMovie(id: number): Observable<Movie>
-  {
-    this.loadToken();
-
-    console.log(id);
-
-    return this.http.get<Movie>(`${this.baseUrl}movieStore/delete/${id}`, this.httpOptions);
-  }
-
-    saveOrder(order: Order): Observable<Order>
-    {
-        return this.http.post<Order>(this.baseUrl + 'orders/add', order);
-    }
-
-    deleteOrder(id: number): Observable<Order>
-    {
-    this.loadToken();
-    return this.http.get<Order>(`${this.baseUrl}orders/delete/${id}`, this.httpOptions);
-    }
-
-    updateOrder(order: Order): Observable<Order>
-    {
+    get(path: string, id?:number): Observable<any> {
       this.loadToken();
-      return this.http.post<Order>(`${this.baseUrl}orders/edit/${order._id}`, order, this.httpOptions);
+
+      const fullPath = id ? `${path}/${id}` : path;
+
+      return this.http.get<any>(this.baseUrl + fullPath, this.httpOptions);
     }
 
-    registerNewUser(user:User): Observable<any>
-    {
-        return this.http.post<any>(this.baseUrl + 'register', user);
-    }    
+    post(path: string, data: any, bool?: boolean): Observable<any> {
+      this.loadToken();
 
-    getCurrentUser(id:Number): Observable<User> {                   
-        // Send a GET request to retrieve the current user's information
-        return this.http.get<User>(`${this.baseUrl}library/${id}`, this.httpOptions);
-      }
+      const fullPath = bool ? `${path}/${data._id}` : path;
+      return this.http.post<any>(this.baseUrl + fullPath, data, this.httpOptions);
+    }
 
     authenticate(user:User): Observable<any>
-    {        
+    {
         return this.http.post<any>(this.baseUrl + 'login', user,this.httpOptions);
     }
 
     storeUserData(token:any, user: User): void
     {
-        this.user = user;        
+        this.user = user;
         localStorage.setItem('id_token', 'Bearer ' + token);
-        localStorage.setItem('user', JSON.stringify(user));       
+        localStorage.setItem('user', JSON.stringify(user));
     }
 
     displayUserID(): Number
-    {           
-        return this.user?._id!;       
+    {
+        return this.user?._id!;
     }
 
     logout(): Observable<any>
@@ -112,35 +73,19 @@ export class RestDataSource
         this.authToken = null!;
         this.user = null!;
         localStorage.clear();
-        
+
         return this.http.get<any>(this.baseUrl + 'logout', this.httpOptions);
     }
 
     loggedIn():Boolean
     {
-        this.loadToken();        
-        return !this.jwtService.isTokenExpired(this.authToken);
-         
-    }
-
-    getOrders(): Observable<Order[]>
-    {
         this.loadToken();
-        return this.http.get<Order[]>(this.baseUrl + 'orders');
-    }
+        return !this.jwtService.isTokenExpired(this.authToken);
 
-    saveContact(contact: Contact): Observable<Contact>
-    {
-        return this.http.post<Contact>(this.baseUrl + 'contact/request', contact);
-    }
-
-    getContacts(): Observable<Contact[]>
-    {
-        return this.http.get<Contact[]>(this.baseUrl + 'contact')
     }
 
     private loadToken(): void {
-        const token = localStorage.getItem('id_token');        
+        const token = localStorage.getItem('id_token');
         this.authToken = token || ''; // Assign an empty string if token is null
         this.httpOptions.headers = this.httpOptions.headers.set(
           'Authorization',

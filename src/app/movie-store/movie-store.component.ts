@@ -14,11 +14,11 @@ export class MovieStoreComponent {
   public selectedFilter : any = '';
   public selectedYear : number = 0;
   public moviesPerPage : number = 9;
-  public selectedPage : number  = 1; 
-  hidden : boolean = true; 
+  public selectedPage : number  = 1;
+  hidden : boolean = true;
   synopsis = document.querySelector("synopsis");
 
-  constructor(private repository:MovieRepository, private cart:Cart, private router: Router){} 
+  constructor(private repository:MovieRepository, private cart:Cart, private router: Router){}
 
   get movies():Movie[]
   {
@@ -34,6 +34,10 @@ export class MovieStoreComponent {
     return this.repository.getPrice();
   }
 
+  get pageCount(): number{
+    return Math.ceil(this.repository.getMovies(this.selectedFilter).length / this.moviesPerPage)
+  }
+
   changeFilter(newFilter?: any):void{
     this.selectedFilter = newFilter!;
   }
@@ -45,11 +49,11 @@ export class MovieStoreComponent {
     if (newFilter == '') {
       this.changeFilter();
     }
-    else{ 
+    else{
       this.changeFilter(newFilter)
       console.log(typeof newFilter);
     }
-  } 
+  }
 
     //Filter by Price
 
@@ -58,24 +62,22 @@ export class MovieStoreComponent {
     if (newFilter == '') {
       this.changeFilter();
     }
-    else{ 
+    else{
       this.changeFilter(Number(newFilter))
       console.log(typeof newFilter);
     }
-  } 
+  }
 
   changePage(newPage: number): void{
     this.selectedPage = newPage;
   }
 
-  changePageSize(newSize: number): void{    
+  changePageSize(newSize: number): void{
     this.moviesPerPage = Number(newSize);
     this.changePage(1);
-  } 
-
-  get pageCount(): number{
-    return Math.ceil(this.repository.getMovies(this.selectedFilter).length / this.moviesPerPage)
   }
+
+
 
   addMovieToCart(movie: Movie):void{
     this.cart.addLine(movie);
@@ -91,16 +93,16 @@ export class MovieStoreComponent {
 
   handleMouseOver(event: Event): void {
     const MouseOver = (event.target as HTMLElement).querySelectorAll('MovieList');
-    
+
     if (MouseOver) {
-      this.mouseOut();      
+      this.mouseOut();
     }
   }
 
   mouseOut(){
     this.hidden= true;
-    //console.log(this.hidden)
-    
+    console.log(this.hidden)
+
   }
 
   mouseOver(){

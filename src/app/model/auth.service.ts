@@ -7,23 +7,23 @@ import { User } from "./user.model";
 
 @Injectable()
 export class AuthService
-{   
+{
 
     constructor(private datasource: RestDataSource){}
 
     authenticate(user: User): Observable<any>
-    {          
-        return this.datasource.authenticate(user);        
+    {
+        return this.datasource.authenticate(user);
     }
 
     storeUserData(token:any,user:User): void
-    {        
-        this.datasource.storeUserData(token,user);        
-    }    
+    {
+        this.datasource.storeUserData(token,user);
+    }
 
     get authenticated(): Boolean
     {
-        return this.datasource.loggedIn();                    
+        return this.datasource.loggedIn();
     }
 
     logout(): Observable<any>
@@ -33,7 +33,7 @@ export class AuthService
 
     registerUser(user:User): Observable<any>
     {
-        return this.datasource.registerNewUser(user);
+        return this.datasource.post("register",user);
     }
 }
 

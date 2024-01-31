@@ -12,14 +12,15 @@ export class MovieRepository
 
     constructor
     (
-      private dataSource: RestDataSource  
+      private dataSource: RestDataSource
     )
     {
-        dataSource.getMovies().subscribe(data =>
-            {            
-            this.movies = data;            
-            this.directors = data.map(b => b.director).filter((a,index,array) => array.indexOf(a) === index).sort();
-            this.prices = data.map(b => b.price).filter((a,index,array) => array.indexOf(a) === index).sort();
+        dataSource.get('movieStore').subscribe(data =>
+            {
+            this.movies = data;
+
+            this.directors = this.movies.map(b => b.director).filter((a,index,array) => array.indexOf(a) === index).sort();
+            this.prices = this.movies.map(b => b.price).filter((a,index,array) => array.indexOf(a) === index).sort();
             // this.ReleaseYear = data.map(b => (b.releaseDate ? new Date(b.releaseDate).getFullYear() : undefined)).filter((year, index, array) => typeof year === 'number' && array.indexOf(year) === index).sort();
 
 
@@ -27,20 +28,20 @@ export class MovieRepository
      }
     //director:string = null
     getMovies(price: number): Movie[];
-    getMovies(director :string): Movie[];  
-    getMovies(): Movie[];  
-    getMovies(param: string | number = '' ): Movie[] 
+    getMovies(director :string): Movie[];
+    getMovies(): Movie[];
+    getMovies(param: string | number = '' ): Movie[]
     {
-        if(typeof param == 'string'){ 
+        if(typeof param == 'string'){
         return this.movies.filter(b => param == '' || param == b.director);
         }
         else if(typeof param == 'number'){
             return this.movies.filter(b =>  param == b.price);
-        }         
+        }
         else{
             return this.movies;
         }
-    }    
+    }
 
     // GetMoviesByYear(year?:Number):Movie[]{
     //     return this.movies.filter(b => year == b.releaseDate?.getFullYear);
@@ -67,13 +68,13 @@ export class MovieRepository
   {
     if (savedMovie._id === null || savedMovie._id === 0 || savedMovie._id === undefined)
     {
-      this.dataSource.addMovie(savedMovie).subscribe(b => {
+      this.dataSource.post("movieStore/add",savedMovie).subscribe(b => {
         this.movies.push(savedMovie);
       });
     }
     else
     {
-      this.dataSource.updateMovie(savedMovie).subscribe(movie => {
+      this.dataSource.post("movieStore/edit",savedMovie,true).subscribe(movie => {
         this.movies.splice(this.movies.findIndex(b => b._id === savedMovie._id), 1, savedMovie);
       });
     }
@@ -81,7 +82,7 @@ export class MovieRepository
 
     deleteMovie(deletedMovieID: number): void
     {
-      this.dataSource.deleteMovie(deletedMovieID).subscribe(movie => {
+      this.dataSource.get("movieStore/delete",deletedMovieID).subscribe(movie => {
         this.movies.splice(this.movies.findIndex(b => b._id === deletedMovieID), 1);
       });
     }

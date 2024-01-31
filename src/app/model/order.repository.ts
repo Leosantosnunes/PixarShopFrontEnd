@@ -11,15 +11,15 @@ export class OrderRepository
     private orders : Order[] = [];
     private loaded = false;
     private user = String;
-    
-    
+
+
 
     constructor(private dataSource: RestDataSource){}
 
     loadOrders(): void
     {
         this.loaded = true;
-        this.dataSource.getOrders().subscribe(orders => this.orders = orders);
+        this.dataSource.get("orders").subscribe(orders => this.orders = orders);
     }
 
 
@@ -32,7 +32,7 @@ export class OrderRepository
     }
 
     saveOrder(order:Order): Observable<Order>
-    {   
+    {
         const userString =  localStorage.getItem('user');
         if (typeof userString === 'string') {
             const userObject = JSON.parse(userString);
@@ -42,19 +42,19 @@ export class OrderRepository
           } else {
             console.error('Invalid user data in localStorage.');
           }
-        return this.dataSource.saveOrder(order);
+        return this.dataSource.post("orders/add",order);
     }
 
     updateOrder(updatedOrder: Order): void
   {
-    this.dataSource.updateOrder(updatedOrder).subscribe(order => {
+    this.dataSource.post("orders/edit",updatedOrder).subscribe(order => {
       this.orders.splice(this.orders.findIndex(o => o._id === order._id), 1, order);
     });
   }
 
     deleteOrder(id: number): void
     {
-      this.dataSource.deleteOrder(id).subscribe(order => {
+      this.dataSource.get("orders/delete",id).subscribe(order => {
         this.orders.splice(this.orders.findIndex(o => id === o._id), 1);
       });
     }

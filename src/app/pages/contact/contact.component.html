@@ -1,4 +1,3 @@
-<app-header></app-header>
 <app-base-page></app-base-page>
     <div class="container">
     <div *ngIf="contactSent" class="m-2 text-center">
@@ -14,13 +13,13 @@
 
         <div class="form-group"><label for="">Email</label><input  class="form-control" #email="ngModel" name="email" type="email" [(ngModel)] = 'contact.email' required><span *ngIf="submitted && email.invalid" class="text-danger">Please enter your email</span></div>
 
-        <div class="form-group"><label for="">Message</label><textarea class="form-control" name="message" id="message" cols="30" rows="10" #message="ngModel" [(ngModel)] = 'contact.message' required><span *ngIf="submitted && message.invalid" class="text-danger">Please enter your message</span></textarea></div>    
-    
+        <div class="form-group"><label for="">Message</label><textarea class="form-control" name="message" id="message" cols="30" rows="10" #message="ngModel" [(ngModel)] = 'contact.message' required><span *ngIf="submitted && message.invalid" class="text-danger">Please enter your message</span></textarea></div>
+
 
         <div class="text-center">
             <button class="btn btn-secondary m-1" routerLink="/cart">Back</button>
             <button class="btn btn-primary m-1" type="submit">Send Message</button>
-        </div> 
+        </div>
 
-    </form>    
+    </form>
 </div>
