@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Movie } from '../model/movie.model';
 import { MovieRepository } from '../model/movie.reposity';
 import { Cart } from '../model/cart.model';
 import { Router } from '@angular/router';
+import { RestDataSource } from '../model/rest.datasource';
+import { createPopper } from '@popperjs/core';
 
 @Component({
   selector: 'app-movie-store',
   templateUrl: './movie-store.component.html',
   styleUrls: ['./movie-store.component.css']
 })
-export class MovieStoreComponent {
+export class MovieStoreComponent  {
 
   public selectedFilter : any = '';
   public selectedYear : number = 0;
@@ -19,6 +21,7 @@ export class MovieStoreComponent {
   synopsis = document.querySelector("synopsis");
 
   constructor(private repository:MovieRepository, private cart:Cart, private router: Router){}
+
 
   get movies():Movie[]
   {
@@ -101,12 +104,12 @@ export class MovieStoreComponent {
 
   mouseOut(){
     this.hidden= true;
-    console.log(this.hidden)
 
   }
 
   mouseOver(){
     this.hidden=false;
-    console.log(this.hidden)
   }
+
+
 }

@@ -8,10 +8,11 @@ import { CheckOutComponent } from './check-out/check-out.component';
 import { RouterModule } from '@angular/router';
 import { PartialsModule } from '../partials/partials.module';
 import { CommonModule } from '@angular/common';
+import { MovieFilterComponent } from './movie-filter/movie-filter.component';
 
 @NgModule({
     imports: [ ModelModule,FormsModule,CommonModule, RouterModule,PartialsModule],
-    declarations: [MovieStoreComponent, CounterDirective, CartDetailComponent, CheckOutComponent],
+    declarations: [MovieStoreComponent, CounterDirective, CartDetailComponent, CheckOutComponent, MovieFilterComponent],
     exports:[MovieStoreComponent,CounterDirective,CartDetailComponent,CheckOutComponent]
 })
 export class MovieStoreModule{

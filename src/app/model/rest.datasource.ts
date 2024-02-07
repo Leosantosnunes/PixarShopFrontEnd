@@ -1,12 +1,11 @@
 import { Injectable } from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, catchError, map, tap, } from "rxjs";
 import { Movie } from "./movie.model";
 import { Order } from "./order.model";
 import { Contact } from "./contact.model";
 import { Cart } from "./cart.model";
 import { User } from "./user.model";
-import { map } from "rxjs";
 import {JwtHelperService} from '@auth0/angular-jwt';
 
 const PROTOCOL = 'http';
@@ -43,7 +42,6 @@ export class RestDataSource
 
       return this.http.get<any>(this.baseUrl + fullPath, this.httpOptions);
     }
-
     post(path: string, data: any, bool?: boolean): Observable<any> {
       this.loadToken();
 

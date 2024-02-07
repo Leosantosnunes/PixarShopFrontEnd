@@ -14,7 +14,7 @@ export class MovieTableComponent {
     private router: Router) { }
 
   getMovies(): Movie[]
-  {   
+  {
     return this.repository.getMovies();
   }
 
@@ -38,7 +38,7 @@ export class MovieTableComponent {
 
   editMovie(id : number): void
   {
-  this.router.navigateByUrl('/admin/movies/edit/' + id);  
+  this.router.navigateByUrl('/admin/movies/edit/' + id);
   }
 }
 
