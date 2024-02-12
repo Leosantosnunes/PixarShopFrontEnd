@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import { forkJoin, tap, map, filter } from 'rxjs';
 import { Movie } from 'src/app/model/movie.model';
 import { MovieFiltered } from 'src/app/model/movieFiltered.model';
 import { RestDataSource } from 'src/app/model/rest.datasource';
@@ -10,16 +10,14 @@ import { RestDataSource } from 'src/app/model/rest.datasource';
   styleUrls: ['./movie-filter.component.css']
 })
 export class MovieFilterComponent {
-  public rootCategoryList: Map<MovieFiltered, boolean> = new Map<MovieFiltered, boolean>();
-  public categoryList: Map<MovieFiltered, boolean> = new Map<MovieFiltered, boolean>();
-  filteredMovies : MovieFiltered = {};
+  filteredMovies : MovieFiltered = new MovieFiltered();
   movies?: Movie[] = new Array<Movie>();;
   directors ?: (string | undefined)[] = [];
   prices ?: (number | undefined)[] = [];
-  releaseYear ?: (Date | undefined)[] = [];
+  releaseYear ?: (number | undefined)[] = [];
   imdbs ?: (number | undefined)[] = [];
 
-  @Output() selectedFilters = new EventEmitter<string>();
+  @Output() filteredMoviesChanged: EventEmitter<MovieFiltered> = new EventEmitter<MovieFiltered>();
 
   constructor(private dataSource: RestDataSource) {this.movies = []}
 
@@ -34,173 +32,72 @@ export class MovieFilterComponent {
 
       this.directors = this.movies?.map(b => b.director).filter((a,index,array) => array.indexOf(a) === index).sort();
       this.prices = this.movies?.map(b => b.price).filter((a,index,array) => array.indexOf(a) === index).sort();
-      this.releaseYear = this.movies?.map(b => b.releaseDate).filter((a, index, array) => array.indexOf(a) === index).sort();
-      this.imdbs = this.movies?.map(b => b.imdbRating).filter((a, index, array) => array.indexOf(a) === index).sort();
-      console.log("directors:" + this.directors);
+
+      this.releaseYear = this.movies
+      ?.filter(b => b.releaseDate) // Filter out movies with undefined releaseDate
+      .map(b => new Date(b.releaseDate!).getFullYear()) // Extracting only the year part
+      .filter((a, index, array) => array.indexOf(a) === index) // Filtering unique years
+      .sort();
+
+      this.imdbs = this.movies
+      ?.filter(b => typeof b.imdbRating === 'number') // Filter out movies with undefined or non-numeric imdbRating
+      .map(b => Math.round(b.imdbRating!)) // Round to one decimal place
+      .filter((a, index, array) => array.indexOf(a) === index) // Filtering unique ratings
+      .sort();
       })
-
-
   }
 
   // ///////////
 
-  filterDirector(director:any)
-  {
-    if(director)
-    {
-      this.filteredMovies.director = director;
+  filterDirector(director: any) {
+    if (director) {
+      const index = this.filteredMovies.director?.indexOf(director);
+      if (index !== undefined && index !== -1) {
+        this.filteredMovies.director?.splice(index, 1);
+      } else {
+        this.filteredMovies.director?.push(director);
+      }
     }
+    this.emitFilteredMovies();
   }
 
-  filterImdb(imdb:any)
-  {
-    if(imdb)
-    {
-      this.filteredMovies.imdbRating = imdb;
+  filterImdb(imdb: any) {
+    if (imdb) {
+      const index = this.filteredMovies.imdbRating?.indexOf(imdb);
+      if (index !== undefined && index !== -1) {
+        this.filteredMovies.imdbRating?.splice(index, 1);
+      } else {
+        this.filteredMovies.imdbRating?.push(imdb);
+      }
     }
+    this.emitFilteredMovies();
   }
 
-  filterPrice(price:any)
-  {
-    if(price)
-    {
-      this.filteredMovies.price = price;
+  filterPrice(price: any) {
+    if (price) {
+      const index = this.filteredMovies.price?.indexOf(price);
+      if (index !== undefined && index !== -1) {
+        this.filteredMovies.price?.splice(index, 1);
+      } else {
+        this.filteredMovies.price?.push(price);
+      }
     }
+    this.emitFilteredMovies();
   }
 
-  filterReleaseYear(year:any)
-  {
-    if(year)
-    {
-      this.filteredMovies.releaseDate = year;
+  filterReleaseYear(year: any) {
+    if (year) {
+      const index = this.filteredMovies.releaseDate?.indexOf(year);
+      if (index !== undefined && index !== -1) {
+        this.filteredMovies.releaseDate?.splice(index, 1);
+      } else {
+        this.filteredMovies.releaseDate?.push(year);
+      }
     }
+    this.emitFilteredMovies();
   }
 
-  // filterRootCategory(entry?: { key: Category; value: boolean }) {
-  //   this.rootCategoryList.set(entry.key, !entry.value);
-  //   this.updateSelectedFilters();
-  // }
-
-  // filterCategory(entry: { key: Category; value: boolean }) {
-  //   this.categoryList.set(entry.key, !entry.value);
-  //   this.updateSelectedFilters();
-  // }
-
-  // filterColor(entry: { key: string; value: boolean }) {
-  //   this.colorList.set(entry.key, !entry.value);
-  //   this.updateSelectedFilters();
-  // }
-
-  // filterPrice(entry: { key: PriceFilter; value: boolean }) {
-  //   this.priceList.set(entry.key, !entry.value);
-  //   this.updateSelectedFilters();
-  // }
-
-  // ///////////
-
-  // setCategoryFilterSelection(collection: Map<Category, boolean>, catInSelection: string[], catNotInSelection: string[]) {
-  //   const inList: string[] = [];
-  //   const ninList: string[] = [];
-  //   collection.forEach((selected, category) => {
-  //     if (selected) {
-  //       inList.push(category._id);
-  //     } else {
-  //       ninList.push(category._id);
-  //     }
-  //   });
-
-  //   /**
-  //    * Only push elements if not all categories are either selected or unselected,
-  //    * in that case we don't need filtering anything
-  //    */
-  //   if (inList.length !== 0 && ninList.length !== 0) {
-  //     catInSelection.push(...inList);
-  //     catNotInSelection.push(...ninList);
-  //   }
-  // }
-
-  // setColorFilterSelection(collection: Map<string, boolean>): string[] {
-  //   const inList = [];
-  //   collection.forEach((value: boolean, key: string) => {
-  //     if (value === true) {
-  //       inList.push(key);
-  //     }
-  //   });
-  //   return inList;
-  // }
-
-  // setPriceFilterSelection(collection: Map<PriceFilter, boolean>): number[][] {
-  //   const inList: number[][] = [];
-
-  //   collection.forEach((value: boolean, key: PriceFilter) => {
-  //     if (value === true) {
-  //       const range = [key.min, key.max];
-  //       inList.push(range);
-  //     }
-  //   });
-
-  //   return inList;
-  // }
-
-  // ///////////
-
-  // updateSelectedFilters() {
-  //   // categories
-  //   const catInSelection: string[] = [];
-  //   const catNotInSelection: string[] = [];
-
-  //   this.setCategoryFilterSelection(this.categoryList, catInSelection, catNotInSelection);
-  //   this.setCategoryFilterSelection(this.rootCategoryList, catInSelection, catNotInSelection);
-
-  //   // colors
-
-  //   const colorInSelection: string[] = this.setColorFilterSelection(this.colorList);
-
-  //   // price
-  //   const pricesInSelection: number[][] = this.setPriceFilterSelection(this.priceList);
-
-  //   // query
-  //   let jsonObj = {};
-  //   if (catInSelection.length > 0 && catNotInSelection.length > 0) {
-  //     jsonObj['metadata.categories'] = {
-  //       $in: catInSelection,
-  //       $nin: catNotInSelection
-  //     };
-  //   }
-  //   if (colorInSelection.length > 0) {
-  //     jsonObj['metadata.color'] = { $in: colorInSelection };
-  //   }
-
-  //   if (pricesInSelection.length > 0) {
-  //     jsonObj['$or'] = [];
-  //     pricesInSelection.forEach(price => {
-  //       jsonObj['$or'].push({
-  //         $and: [
-  //           {
-  //             'metadata.price': {
-  //               $gte: price[0]
-  //             }
-  //           },
-  //           {
-  //             'metadata.price': {
-  //               $lte: price[1]
-  //             }
-  //           }
-  //         ]
-  //       });
-  //     });
-
-  //     // Introducing "$or" means we need to combine with an "$and" for the other conditions
-  //     const auxObj = { $and: [] };
-
-  //     auxObj.$and.push(
-  //       { "'metadata.categories": jsonObj['metadata.categories'], 'metadata.color': jsonObj['metadata.color'] },
-  //       { $or: jsonObj['$or'] }
-  //     );
-  //     jsonObj = auxObj;
-  //   }
-
-  //   const query = encodeURIComponent(JSON.stringify(jsonObj));
-  //   this.selectedFilters.emit(query);
-  // }
+  emitFilteredMovies() {
+    this.filteredMoviesChanged.emit(this.filteredMovies);
+  }
 }

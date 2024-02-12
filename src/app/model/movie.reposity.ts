@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Movie} from './movie.model';
 import { RestDataSource } from './rest.datasource';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class MovieRepository
@@ -10,23 +11,8 @@ export class MovieRepository
     public prices : (number | undefined)[] = [];
     //public ReleaseYear : (number | undefined)[] = [];
 
-    constructor
-    (
-      private dataSource: RestDataSource
-    )
-    {
-        dataSource.get('movieStore').subscribe(data =>
-            {
-            this.movies = data;
+    constructor(private dataSource: RestDataSource){}
 
-            this.directors = this.movies.map(b => b.director).filter((a,index,array) => array.indexOf(a) === index).sort();
-            this.prices = this.movies.map(b => b.price).filter((a,index,array) => array.indexOf(a) === index).sort();
-            // this.ReleaseYear = data.map(b => (b.releaseDate ? new Date(b.releaseDate).getFullYear() : undefined)).filter((year, index, array) => typeof year === 'number' && array.indexOf(year) === index).sort();
-
-
-        })
-     }
-    //director:string = null
     getMovies(price: number): Movie[];
     getMovies(director :string): Movie[];
     getMovies(): Movie[];
@@ -47,6 +33,11 @@ export class MovieRepository
     //     return this.movies.filter(b => year == b.releaseDate?.getFullYear);
     //     console.log(year);
     // }
+
+    getMoviesOrFilteredMovies(): Observable<Movie[]>
+    {
+      return this.dataSource.get('movieStore');
+    }
 
     getMovie(id:number): Movie
     {

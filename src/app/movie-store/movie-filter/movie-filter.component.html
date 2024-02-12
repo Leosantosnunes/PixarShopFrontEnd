@@ -1,35 +1,56 @@
-<ul>
-  <li class="mb-3" *ngFor="let year of releaseYear">
-    <label class="radio is-size-4" >
-      <input type="checkbox" value="{{year}}" [checked]="year" (change)="filterReleaseYear(year)">
-      <span class="pl-2">{{year}}</span>
-    </label>
-  </li>
-</ul>
-<hr/>
-<ul>
-  <li class="mb-3" *ngFor="let director of directors">
-    <label class="checkbox is-size-4" >
-      <input type="checkbox" value="{{director}}" [checked]="director" (change)="filterDirector(director)">
-      <span class="pl-2">{{director}}</span>
-    </label>
-  </li>
-</ul>
-<hr/>
-<ul>
-  <li class="mb-3 color-item" *ngFor="let imdb of imdbs">
-      <label class="checkbox is-size-4">
-        <input type="checkbox" value="{{imdb}}" [checked]="imdb" (change)="filterImdb(imdb)">
-      <span class="pl-2">{{imdb}}</span>
+<div class="dropdown m-2">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Release Year
+  </button>
+  <ul class="dropdown-menu">
+    <li class="mb-3" *ngFor="let year of releaseYear">
+      <label class="radio is-size-4" >
+        <input type="checkbox" value="{{year}}" (change)="filterReleaseYear(year)">
+        <span class="pl-2">{{year }}</span>
       </label>
     </li>
-</ul>
-<hr/>
-<ul>
-  <li class="mb-3" *ngFor="let price of prices">
-    <label class="checkbox is-size-4" >
-      <input type="checkbox" value="{{price}}" [checked]="price" (change)="filterPrice(price)">
-      <span class="pl-2">{{price}}</span>
-    </label>
-  </li>
-</ul>
+  </ul>
+</div>
+
+<div class="dropdown m-2">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Director
+  </button>
+  <ul class="dropdown-menu">
+    <li class="mb-3" *ngFor="let director of directors">
+      <label class="checkbox is-size-4" >
+        <input type="checkbox" value="{{director}}" (change)="filterDirector(director)">
+        <span class="pl-2">{{director}}</span>
+      </label>
+    </li>
+  </ul>
+</div>
+
+<div class="dropdown m-2">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Imdb Rating
+  </button>
+  <ul class="dropdown-menu">
+    <li class="mb-3 color-item" *ngFor="let imdb of imdbs">
+        <label class="checkbox is-size-4">
+          <input type="checkbox" value="{{imdb}}" (change)="filterImdb(imdb)">
+        <span class="pl-2">{{imdb}}</span>
+        </label>
+      </li>
+  </ul>
+</div>
+
+<div class="dropdown m-2">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Price
+  </button>
+  <ul class="dropdown-menu">
+    <li class="mb-3" *ngFor="let price of prices">
+      <label class="checkbox is-size-4" >
+        <input type="checkbox" value="{{price}}" (change)="filterPrice(price)">
+        <span class="pl-2">{{price}}</span>
+      </label>
+    </li>
+  </ul>
+</div>
+

@@ -1,25 +1,6 @@
 <div>
 
-    <div class="container m-5">
-        <div class="d-flex" >
-            <div class="m-2">
-                <select class="" (click)='handleChangeDirector($event)'>
-                    <option value = ''>All Directors</option>
-                    <option *ngFor='let director of directors' class=""
-                    [class.active] = 'director == selectedFilter' >{{director}}</option>
-                </select>
-            </div>
-            <div class="m-2">
-                <select class="" (click)='handleChangePrice($event)'>
-                    <option value = ''>All Prices</option>
-                    <option *ngFor='let price of prices' class=""
-                    [class.active] = 'price == selectedFilter' >{{price}}</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <app-movie-filter></app-movie-filter>
+    <app-movie-filter (filteredMoviesChanged)="onFilteredMoviesChanged($event)"></app-movie-filter>
 
 
     <div class="container">
