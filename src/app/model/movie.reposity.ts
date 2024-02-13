@@ -13,27 +13,6 @@ export class MovieRepository
 
     constructor(private dataSource: RestDataSource){}
 
-    getMovies(price: number): Movie[];
-    getMovies(director :string): Movie[];
-    getMovies(): Movie[];
-    getMovies(param: string | number = '' ): Movie[]
-    {
-        if(typeof param == 'string'){
-        return this.movies.filter(b => param == '' || param == b.director);
-        }
-        else if(typeof param == 'number'){
-            return this.movies.filter(b =>  param == b.price);
-        }
-        else{
-            return this.movies;
-        }
-    }
-
-    // GetMoviesByYear(year?:Number):Movie[]{
-    //     return this.movies.filter(b => year == b.releaseDate?.getFullYear);
-    //     console.log(year);
-    // }
-
     getMoviesOrFilteredMovies(): Observable<Movie[]>
     {
       return this.dataSource.get('movieStore');
@@ -44,31 +23,21 @@ export class MovieRepository
         //no "!"
         return this.movies.find(b => b._id == id)!;
     }
-    getDirectors(): (string | undefined)[]
-    {
-        return this.directors;
-    }
-    getPrice(): (number| undefined)[]
-    {
-        return this.prices;
-    }
-
-
 
     saveMovie(savedMovie: Movie): void
-  {
-    if (savedMovie._id === null || savedMovie._id === 0 || savedMovie._id === undefined)
-    {
-      this.dataSource.post("movieStore/add",savedMovie).subscribe(b => {
-        this.movies.push(savedMovie);
-      });
-    }
-    else
-    {
-      this.dataSource.post("movieStore/edit",savedMovie,true).subscribe(movie => {
-        this.movies.splice(this.movies.findIndex(b => b._id === savedMovie._id), 1, savedMovie);
-      });
-    }
+      {
+      if (savedMovie._id === null || savedMovie._id === 0 || savedMovie._id === undefined)
+      {
+        this.dataSource.post("movieStore/add",savedMovie).subscribe(b => {
+          this.movies.push(savedMovie);
+        });
+      }
+      else
+      {
+        this.dataSource.post("movieStore/edit",savedMovie,true).subscribe(movie => {
+          this.movies.splice(this.movies.findIndex(b => b._id === savedMovie._id), 1, savedMovie);
+        });
+      }
   }
 
     deleteMovie(deletedMovieID: number): void

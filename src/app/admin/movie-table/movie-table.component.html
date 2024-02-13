@@ -6,7 +6,7 @@
       <tr>
         <th>Name</th>
         <th>Author</th>
-        <th>Release Date</th>        
+        <th>Release Date</th>
         <th>Poster </th>
         <th>Price</th>
         <th></th>
@@ -14,10 +14,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor='let m of getMovies()'>
+      <tr *ngFor='let m of movies'>
         <td>{{ m.title }}</td>
         <td>{{ m.director }}</td>
-        <td>{{ m.releaseDate }}</td>        
+        <td>{{ m.releaseDate }}</td>
         <td>{{ m.posterUrl }}</td>
         <td>{{ m.price | currency: 'USD': 'symbol': '2.2-2'}}</td>
         <td>
@@ -28,10 +28,10 @@
         <td>
           <button class="btn btn-sm btn-danger m-1" *ngIf="m._id !== undefined" (click)="deleteMovie(m._id)">
              Delete
-          </button> 
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
-  
-  
+
+

@@ -97,6 +97,15 @@ export class MovieFilterComponent {
     this.emitFilteredMovies();
   }
 
+  clearFilters()
+  {
+    this.filteredMovies.director = [];
+    this.filteredMovies.releaseDate = [];
+    this.filteredMovies.imdbRating = [];
+    this.filteredMovies.price = [];
+    this.emitFilteredMovies();
+  }
+
   emitFilteredMovies() {
     this.filteredMoviesChanged.emit(this.filteredMovies);
   }

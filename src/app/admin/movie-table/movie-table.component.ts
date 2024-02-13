@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Movie } from 'src/app/model/movie.model';
 import { MovieRepository } from 'src/app/model/movie.reposity';
@@ -8,14 +8,19 @@ import { MovieRepository } from 'src/app/model/movie.reposity';
   templateUrl: './movie-table.component.html',
   styleUrls: ['./movie-table.component.css']
 })
-export class MovieTableComponent {
+export class MovieTableComponent implements OnInit {
 
-  constructor(private repository: MovieRepository,
-    private router: Router) { }
+  movies: Movie[] = [];
 
-  getMovies(): Movie[]
+  constructor(private repository: MovieRepository,private router: Router) { }
+
+  ngOnInit(): void {
+    this.getMovies();
+  }
+
+  getMovies()
   {
-    return this.repository.getMovies();
+    this.repository.getMoviesOrFilteredMovies().subscribe(data => this.movies = data);
   }
 
   deleteMovie(id: number): void

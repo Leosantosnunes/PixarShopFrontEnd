@@ -20,26 +20,10 @@ export class MovieStoreComponent implements OnInit  {
   public moviesPerPage : number = 9;
   public selectedPage : number  = 1;
   movies : Movie[] = [];
+  moviesData : Movie[]= [];
   hidden : boolean = true;
   synopsis = document.querySelector("synopsis");
   filteredMovies?: MovieFiltered = undefined;
-
-  // get movies():Movie[]
-  // {
-  //   const pageIndex = (this.selectedPage -1) * this.moviesPerPage;
-  //   return this.repository.getMoviesOrFilteredMovies()
-  //   .filter(movie => {
-  //     // Check if the movie matches the filteredMovies attributes
-  //     return (
-  //       (!this.filteredMovies.director || this.filteredMovies.director.includes(movie.director || '')) &&
-  //       (!this.filteredMovies.releaseDate || this.filteredMovies.releaseDate.includes(new Date(movie.releaseDate!).getFullYear())) &&
-  //       (!this.filteredMovies.imdbRating || this.filteredMovies.imdbRating.includes(Math.round(movie.imdbRating!))) &&
-  //       (!this.filteredMovies.price || this.filteredMovies.price.includes(movie.price || 0))
-  //     );
-  //   })
-  //   .slice(pageIndex, pageIndex + this.moviesPerPage); // Apply pagination
-  // }
-
 
   constructor(private repository:MovieRepository, private cart:Cart, private router: Router){}
 
@@ -48,36 +32,36 @@ export class MovieStoreComponent implements OnInit  {
   }
 
   get pageCount(): number{
-    return Math.ceil(this.movies.length / this.moviesPerPage)
+    return Math.ceil(this.moviesData.length / this.moviesPerPage)
   }
 
   displayMovies(){
     const pageIndex = (this.selectedPage -1) * this.moviesPerPage;
     this.repository.getMoviesOrFilteredMovies().subscribe(b => {
-      console.log(b);
-      if(typeof this.filteredMovies === undefined ){
-        this.movies = b;
-      }
-      else{
-        // this.movies = b.filter(movie => {
-        //   // Check if the movie matches the filteredMovies attributes
-        //     (!this.filteredMovies.director || this.filteredMovies.director.includes(movie.director || '')) &&
-        //     (!this.filteredMovies.releaseDate || this.filteredMovies.releaseDate.includes(new Date(movie.releaseDate!).getFullYear())) &&
-        //     (!this.filteredMovies.imdbRating || this.filteredMovies.imdbRating.includes(Math.round(movie.imdbRating!))) &&
-        //     (!this.filteredMovies.price || this.filteredMovies.price.includes(movie.price));
-        // })
-        // .slice(pageIndex, pageIndex + this.moviesPerPage); // Apply pagination
-      }
-    console.log(this.movies,this.filteredMovies);
-    })
-  }
+      this.moviesData = b.filter(movie => {
+        // Check if the movie matches the filteredMovies attributes
+        return (
+          (!this.filteredMovies?.director?.length || this.filteredMovies.director.includes(movie.director || ''))
+          &&
+          (!this.filteredMovies?.releaseDate?.length || this.filteredMovies.releaseDate.includes(new Date(movie.releaseDate!).getFullYear())
+          &&
+          (!this.filteredMovies?.imdbRating?.length || this.filteredMovies.imdbRating.includes(Math.round(movie.imdbRating!)))
+          &&
+          (!this.filteredMovies?.price?.length || this.filteredMovies.price.includes(movie.price || 0))
+        ));
+      });
 
-  changeFilter(newFilter?: any):void{
-    this.selectedFilter = newFilter!;
+      this.movies = this.moviesData.slice(pageIndex, pageIndex + this.moviesPerPage); // Apply pagination
+      console.log('Filtered Movies:', pageIndex, this.moviesPerPage);
+
+
+
+    })
   }
 
   changePage(newPage: number): void{
     this.selectedPage = newPage;
+    this.displayMovies();
   }
 
   changePageSize(newSize: number): void{
@@ -92,6 +76,7 @@ export class MovieStoreComponent implements OnInit  {
 
   handleChangePageSize(event: Event): void {
     const newSize = (event.target as HTMLSelectElement).value;
+    console.log(newSize)
     if (newSize) {
       this.changePageSize(Number(newSize));
     }
@@ -112,7 +97,10 @@ export class MovieStoreComponent implements OnInit  {
 
   onFilteredMoviesChanged(filteredMovies: MovieFiltered) {
     this.filteredMovies = filteredMovies;
+    this.displayMovies();
   }
 
 
 }
+
+

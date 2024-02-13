@@ -1,18 +1,20 @@
-<app-base-page></app-base-page>
+<div class="text-bg-dark">
+  <app-base-page></app-base-page>
 
-<div class="container">
-    <div class="row">
-        <div *ngFor='let movie of movies' class="Movielist col" style="max-width: 250px;">
-            <div class="shadow p-3 mb-5 bg-body rounded">
-                <img src="assets/images/{{movie.posterUrl}}" alt="poster" style="min-width: 200px; max-width: 100%;">
-                <div class="d-flex flex-column align-items-center">
-                    <h4 class="m-1">{{movie.title }}</h4>
-                    <p>Synopsis:</p>
-                    <p>{{movie.overview}}</p>
-                    <button class="btn btn-info m-1">Watch Movie</button>
-                </div>
-            </div>
-        </div>
-    </div>
+  <div class="container text-dark">
+      <div class="row">
+          <div *ngFor='let movie of movies' class="Movielist col" style="max-width: 250px;">
+              <div class="shadow p-3 mb-5 bg-body rounded">
+                  <img src="assets/images/{{movie.posterUrl}}" alt="poster" style="min-width: 200px; max-width: 100%;">
+                  <div class="d-flex flex-column align-items-center">
+                      <h4 class="m-1">{{movie.title }}</h4>
+                      <p>Synopsis:</p>
+                      <p>{{movie.overview}}</p>
+                      <button class="btn btn-info m-1">Watch Movie</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
 
